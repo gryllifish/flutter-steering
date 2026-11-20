@@ -1,0 +1,45 @@
+# Validates the plugin on every push and PR: manifests are valid JSON,
+# shell scripts pass shellcheck, and the hook test suite passes.
+# Actions are pinned to commit SHAs (tag in the comment).
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: dart-lang/setup-dart@2286a0c042b44434fe26d292bbce8d34f7ec662b # v1.8.2
+
+      - name: Manifests are valid JSON
+        run: |
+          for f in .claude-plugin/plugin.json .claude-plugin/marketplace.json .mcp.json hooks/hooks.json; do
+            jq empty "$f"
+          done
+
+      - name: Every skill and agent has name and description
+        run: |
+          for f in skills/*/SKILL.md agents/*.md; do
+            grep -q '^name: ' "$f" && grep -q '^description: ' "$f" || { echo "missing frontmatter: $f"; exit 1; }
+          done
+
+      - name: Shellcheck
+        run: shellcheck --severity=warning -e SC1090,SC1091 hooks/scripts/*.sh skills/*/scripts/*.sh tests/*.sh
+
+      - name: Hook tests
+        run: tests/hooks_test.sh
