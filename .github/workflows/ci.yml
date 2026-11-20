@@ -41,5 +41,13 @@ jobs:
       - name: Shellcheck
         run: shellcheck --severity=warning -e SC1090,SC1091 hooks/scripts/*.sh skills/*/scripts/*.sh tests/*.sh
 
+      - name: Dart scripts are formatted and analyzed
+        run: |
+          dart format --output=none --set-exit-if-changed skills
+          dart analyze --fatal-infos skills
+
       - name: Hook tests
         run: tests/hooks_test.sh
+
+      - name: Triage tests
+        run: tests/triage_test.sh
