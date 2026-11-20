@@ -1,0 +1,13 @@
+{
+  "name": "flutter-steering",
+  "owner": {
+    "name": "Francisco Páez"
+  },
+  "plugins": [
+    {
+      "name": "flutter-steering",
+      "source": "./",
+      "description": "Senior Flutter engineering workflow for Claude Code."
+    }
+  ]
+}
