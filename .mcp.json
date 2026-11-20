@@ -2,7 +2,7 @@
   "mcpServers": {
     "dart": {
       "command": "dart",
-      "args": ["mcp-server"]
+      "args": ["mcp-server", "--enable", "flutter_app_lifecycle"]
     }
   }
 }
