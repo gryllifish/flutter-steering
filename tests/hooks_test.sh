@@ -96,6 +96,11 @@ none|rm -rf build/
 none|rm -rf ./build
 ask|flutter pub publish
 none|dart pub publish --dry-run
+none|flutter run --dart-define-from-file=.env
+none|fvm flutter build apk --dart-define-from-file=.env.production
+none|cd android && ./gradlew assembleRelease
+deny|flutter run --dart-define-from-file=.env && cat .env
+deny|flutter test; head -n 3 .env.production
 none|flutter test
 none|git push origin main
 EOF
@@ -124,6 +129,36 @@ run analyze_on_stop.sh "$project" '{"session_id":"s1","stop_hook_active":false}'
 check "stop: clean files pass" 0 "$code"
 run analyze_on_stop.sh "$project" '{"session_id":"s2","stop_hook_active":false}'
 check "stop: nothing touched passes" 0 "$code"
+
+# Someone else's git repo: committed formatting is respected, and only issues
+# on changed lines block the turn.
+repo="$tmp/repo"
+mkdir -p "$repo/lib"
+printf 'name: repo\nenvironment:\n  sdk: ^3.5.0\n' >"$repo/pubspec.yaml"
+printf 'void legacy(){final a=1;}\n' >"$repo/lib/legacy.dart"
+printf 'void clean() {}\n' >"$repo/lib/clean.dart"
+printf 'void old() {\n  final c = 3;\n}\n\nvoid other() {}\n' >"$repo/lib/old.dart"
+(cd "$repo" && git init -q && git add -A &&
+  git -c user.name=test -c user.email=test@example.com commit -qm init && dart pub get >/dev/null 2>&1)
+edit() { run format_dart.sh "$repo" "$(jq -nc --arg f "$repo/lib/$1" '{session_id: "s3", tool_name: "Edit", tool_input: {file_path: $f}}')"; }
+stop() { run analyze_on_stop.sh "$repo" '{"session_id":"s3","stop_hook_active":false}'; }
+
+printf 'void clean(){print(1);}\n' >"$repo/lib/clean.dart"
+edit clean.dart
+check "format: formatted file stays formatted" "3" "$(wc -l <"$repo/lib/clean.dart" | tr -d ' ')"
+
+printf 'void legacy(){final a=1;}\nvoid added() {\n  final b = 2;\n}\n' >"$repo/lib/legacy.dart"
+edit legacy.dart
+check "format: unformatted committed file left alone" "void legacy(){final a=1;}" "$(head -n 1 "$repo/lib/legacy.dart")"
+stop
+check "stop: new issue blocks" 2 "$code"
+check "stop: only the new issue is listed" "1" "$(grep -c 'unused_local_variable' <<<"$out")"
+check "stop: pre-existing issue mentioned" yes "$(grep -q '1 pre-existing' <<<"$out" && echo yes)"
+
+printf 'void old() {\n  final c = 3;\n}\n\nvoid other() {}\n\n// Touched.\n' >"$repo/lib/old.dart"
+edit old.dart
+stop
+check "stop: pre-existing issues alone don't block" 0 "$code"
 
 # session_context
 run session_context.sh "$project" '{"session_id":"s1"}'

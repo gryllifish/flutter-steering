@@ -21,12 +21,21 @@ fi
 cmd="$(json .tool_input.command)"
 [[ -n "$cmd" ]] || exit 0
 
-# Any token of the command that names a secret file. Globbing is disabled so
-# tokens like `*` are inspected literally instead of expanded.
+# Any token of the command that names a secret file, checked per segment
+# (split on ; && || | &). Build and run tools may reference secret files
+# (`flutter run --dart-define-from-file=.env`, Gradle signing) because they
+# consume them without printing them; anything else that names one is denied.
+# Globbing is disabled so tokens like `*` are inspected literally.
 set -f
-for token in $(tr -s " \t\n;|&<>()'\"=" '\n' <<<"$cmd"); do
-  is_secret "$token" && deny "The command touches $(basename -- "$token"), which $secret_reason"
-done
+while IFS= read -r segment; do
+  first="$(awk '{print $1}' <<<"$segment")"
+  case "${first##*/}" in
+    flutter | fvm | dart | gradlew | gradle | xcodebuild | fastlane | melos) continue ;;
+  esac
+  for token in $(tr -s " \t;|&<>()'\"=" '\n' <<<"$segment"); do
+    is_secret "$token" && deny "The command touches $(basename -- "$token"), which $secret_reason"
+  done
+done < <(awk '{ gsub(/\|\||&&|[;|&]/, "\n"); print }' <<<"$cmd")
 
 ere() { grep -qE -e "$1" <<<"$cmd"; }
 
