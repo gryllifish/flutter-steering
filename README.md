@@ -49,7 +49,7 @@ manual-only because they have side effects.
 | Skill | What it does |
 |---|---|
 | `standards` | Architecture, state management (Riverpod, Bloc, Provider), widgets and error-handling rules. Short entry point, details read on demand. |
-| `onboard` | Detects the stack, maps an unfamiliar codebase through `flutter-explorer`, can draft a project `CLAUDE.md`. |
+| `onboard` | Detects the stack, checks the project can build here (SDK constraints and pins, codegen outputs, env/define files, flavors, Firebase config), maps the codebase through `flutter-explorer`, can draft a project `CLAUDE.md`. |
 | `verify` | Definition of Done gate. Runs the project's own gate if it has one, otherwise infers the steps (FVM, codegen, l10n, format, analyze, test). Prints only failures. |
 | `feature` | Builds a feature end to end, using the project's most complete feature as the template. |
 | `test` | Unit, widget, golden, bloc/provider and accessibility tests in the project's style. |
@@ -79,9 +79,9 @@ Rules that should hold every time are hooks, not instructions.
 |---|---|
 | `SessionStart` | Adds a one-line stack summary to the context, so conventions are known from the first message. |
 | `PreToolUse` | Denies edits to generated files (`*.g.dart`, `*.freezed.dart`, files with a generated header...) and points to the generator. |
-| `PreToolUse` | Denies access to secrets (`.env`, keystores, `key.properties`, service accounts, `.p8`). Asks before force push, hard reset, `git clean`, broad `rm -rf` and `pub publish`. |
-| `PostToolUse` | Runs `dart format` on each Dart file Claude edits. |
-| `Stop` | Runs `dart analyze` on the files touched in the session. If there are issues, the turn is blocked once and they go back to Claude. |
+| `PreToolUse` | Denies access to secrets (`.env`, keystores, `key.properties`, service accounts, `.p8`); build tools may still reference them (`flutter run --dart-define-from-file=.env`). Asks before force push, hard reset, `git clean`, broad `rm -rf` and `pub publish`. |
+| `PostToolUse` | Runs `dart format` on each Dart file Claude edits, unless the committed version wasn't formatted: in a codebase that doesn't use `dart format`, a one-line edit stays a one-line diff. |
+| `Stop` | Runs `dart analyze` on the files touched in the session. Issues on lines Claude changed block the turn once and go back to Claude; pre-existing issues elsewhere are mentioned, never forced. |
 
 ### MCP
 `.mcp.json` registers the official Dart & Flutter MCP server
@@ -93,6 +93,9 @@ app's widget tree, logs and hot reload.
 - **Project conventions win.** Every skill starts by finding the closest
   existing example in the project. The plugin fills gaps; it doesn't
   rewrite a codebase into my preferences.
+- **Small footprint in someone else's code.** No reformatting of files the
+  team doesn't format, no blocking on lint debt Claude didn't create, no
+  drive-by refactors. The diff should contain the task and nothing else.
 - **Cheap on context.** Skill descriptions are always loaded; bodies only
   when used; reference files only when a skill needs them. Scripts print
   compact output (`✓`/`✗` per step, tails of failures) so results don't
