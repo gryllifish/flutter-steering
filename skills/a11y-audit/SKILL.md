@@ -1,6 +1,6 @@
 ---
 name: a11y-audit
-description: Audit and fix Flutter accessibility (semantics labels, tap targets, contrast, text scaling, focus/keyboard, screen readers) with static checks and automated guideline tests. Use when building UI, before release, or when asked about accessibility.
+description: Audits and fixes Flutter accessibility (semantics labels, tap targets, contrast, text scaling, focus and keyboard, screen readers) with static checks and meetsGuideline widget tests. Use when finishing UI work, before a release, or when asked about accessibility. Do not use for general UI building or layout errors (use triage or the official flutter-fix-layout-issues skill).
 argument-hint: "[path | screen]"
 ---
 

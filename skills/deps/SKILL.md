@@ -1,6 +1,6 @@
 ---
 name: deps
-description: Manage Dart/Flutter dependencies safely - evaluate and add a package (with user approval), upgrade outdated packages in small verified steps, or migrate the Flutter/Dart SDK version. Use when adding a package, running pub upgrades, fixing version conflicts or bumping Flutter.
+description: Manages Dart/Flutter dependencies safely - evaluates a package before adding it (with user approval), upgrades outdated packages in small verified steps, and migrates the Flutter/Dart SDK version. Use when adding a package, running pub upgrades or bumping Flutter. Do not use for a single pub get version conflict; the official dart-resolve-package-conflicts skill covers that.
 argument-hint: "['add <package>' | 'upgrade' | 'sdk <version>']"
 ---
 

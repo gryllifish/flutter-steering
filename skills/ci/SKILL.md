@@ -1,6 +1,6 @@
 ---
 name: ci
-description: Set up or improve CI/CD for a Flutter project (GitHub Actions by default) - quality gate, generated-files check, builds per platform, caching, pinned actions, Dependabot. Use when asked to add, fix or review CI pipelines.
+description: Sets up, reviews or fixes CI for a Flutter project (GitHub Actions by default) - quality gate, generated-files check, per-platform builds, caching, SHA-pinned actions, minimal permissions, Dependabot. Use when asked to add, harden or repair a pipeline. Do not use to debug a test that also fails locally (use triage).
 argument-hint: "['setup' | 'review' | 'fix <run-url>']"
 ---
 

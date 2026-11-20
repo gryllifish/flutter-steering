@@ -1,6 +1,6 @@
 ---
 name: perf-audit
-description: Audit Flutter app performance (rebuilds, jank, lists, images, isolates, startup, app size) with static heuristics plus profiling guidance, and propose ranked fixes. Use when the app feels slow or janky, before a release, or when asked about performance.
+description: Audits Flutter app performance (rebuilds, jank, lists, images, isolates, startup, app size) with a static scan plus profiling guidance, and proposes ranked fixes. Use when the app feels slow or janky, before a release, or when asked about performance. Do not use for layout errors such as overflows (use triage or the official flutter-fix-layout-issues skill).
 argument-hint: "[path | 'size' | 'startup']"
 ---
 

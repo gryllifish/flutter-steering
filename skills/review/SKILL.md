@@ -1,6 +1,6 @@
 ---
 name: review
-description: Review Flutter/Dart changes (working tree, branch vs base, a PR or given files) for correctness, architecture, performance, accessibility, security and test gaps, using the flutter-reviewer agent. Use before committing or opening a PR, or when asked to review code.
+description: Reviews Flutter/Dart changes (working tree, branch vs base, a PR or given files) for Flutter-specific correctness, state management, performance, accessibility, security and test gaps through the flutter-reviewer agent, beyond what the analyzer reports. Use before committing or opening a PR, or when asked to review Flutter code. Do not use for non-Dart code or a language-agnostic bug hunt (Claude Code's /code-review covers that).
 argument-hint: "[base-branch | PR number | paths]"
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: triage
-description: Find the root cause of a Flutter/Dart error fast from any log - flutter run/test output, device logs (logcat, iOS), Gradle/Xcode/CocoaPods builds, pub resolution, analyzer, CI runs. Extracts the signal from long logs, keeps only the project's own stack frames, then traces it to the code. Use when the user shares an error or stack trace, a build or test fails, or the app crashes.
+description: Finds the root cause of a Flutter/Dart error from any log - flutter run/test output, device logs (logcat, iOS simulator), Gradle/Xcode/CocoaPods builds, pub resolution, analyzer, CI runs. Extracts the distinct errors with only the project's own stack frames, traces them to the code and proves the fix. Use when the user shares an error or stack trace, a build or test fails, or the app crashes. Do not use when there is no error to explain (use review for suspected bugs).
 argument-hint: "[log-file | 'device' | 'ci <run-url>' | failing command]"
 ---
 
@@ -13,7 +13,7 @@ Never read a long log into the conversation: save it to a file and extract.
 |---|---|
 | Pasted by the user | write it to a file |
 | A failing command (build, test, pub get) | re-run it capturing output: `<cmd> > <file> 2>&1`; add `--verbose` / `--stacktrace` only if the extract isn't enough |
-| Running app | Dart MCP: `list_devices` → `launch_app` (or `dtd` → connect to an app the user started) → reproduce → `get_runtime_errors` / `get_app_logs` |
+| Running app | this plugin's MCP tools: `list_devices` → `launch_app` → reproduce → `get_app_logs`; for an app the user started, the official Dart MCP server's `dtd` connect → `get_runtime_errors` |
 | Android device | `adb logcat -c`, reproduce, `adb logcat -d -t 3000 > <file>` |
 | iOS simulator | `xcrun simctl spawn booted log show --last 5m --style compact --predicate 'process == "Runner"' > <file>` |
 | CI | `gh run view <id> --log-failed > <file>` |
@@ -50,8 +50,8 @@ enough, read the raw log only around one message:
 ## 4. Fix and prove it
 1. State the root cause in one or two sentences with `path:line` evidence.
    If unsure, say what would confirm it instead of guessing.
-2. If it reproduces in a test, write the failing regression test first
-   (`test` skill), then fix.
+2. If it reproduces in a test, write the failing regression test first (in
+   the project's test style), then fix.
 3. Re-run the same command or reproduction and extract again: the error must
    be gone, not replaced by a different one.
 4. Fix the cause, not the symptom: no catch that swallows, no `?? ''` over a

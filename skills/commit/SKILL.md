@@ -1,6 +1,6 @@
 ---
 name: commit
-description: Propose atomic Conventional Commits for the current changes and create them only after the user approves. Use when the user asks to commit or to prepare commit messages.
+description: Proposes atomic Conventional Commits for the current changes and creates them only after the user approves. Use when the user asks to commit or to prepare commit messages. Do not use to push, tag or open pull requests unless the user asks for that too.
 disable-model-invocation: true
 ---
 

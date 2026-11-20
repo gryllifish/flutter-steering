@@ -1,6 +1,6 @@
 ---
 name: release
-description: Prepare a Flutter app release - version bump, changelog from Conventional Commits, pre-release checks, release builds with obfuscation, and a store submission checklist. Use only when the user explicitly asks to prepare or cut a release.
+description: Prepares a Flutter app release - version bump, changelog from Conventional Commits, pre-release checks, obfuscated release builds and a store checklist. Use only when the user explicitly asks to prepare or cut an app release. Do not use to publish packages to pub.dev.
 argument-hint: "[major | minor | patch | <version>]"
 disable-model-invocation: true
 ---

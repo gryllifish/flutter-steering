@@ -1,6 +1,6 @@
 ---
 name: verify
-description: Definition of Done gate for Dart/Flutter projects (pub get, codegen, l10n, format, analyze, test) with token-cheap output. Uses the project's own gate when it has one. Use after any code change and before proposing a commit or declaring a task done.
+description: Runs the Definition of Done gate for Dart/Flutter projects (pub get, codegen, l10n, format, analyze, test) with token-cheap output, delegating to the project's own gate when it has one. Use before changing code to know the baseline, after any change, and before proposing a commit or declaring a task done. Do not use as a substitute for writing tests for new logic.
 argument-hint: "[--skip-codegen] [--no-test]"
 ---
 
@@ -32,7 +32,8 @@ Run `scripts/verify.sh` from this skill's directory, passing the project root:
 
 ## What the script cannot check
 Before saying "done", also confirm:
-- New or changed logic has tests (see the `test` skill).
+- New or changed logic has tests (official `flutter-add-widget-test` /
+  `dart-add-unit-test` skills, or the `flutter-test-writer` agent).
 - No hardcoded user-facing strings, colors or sizes where the project has
   l10n and a theme.
 - Layer rules and conventions of the project (its `CLAUDE.md` or the

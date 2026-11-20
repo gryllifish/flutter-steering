@@ -1,6 +1,6 @@
 ---
 name: onboard
-description: Get productive in an unfamiliar Flutter/Dart codebase in minutes. Detects the stack, maps architecture and conventions with the flutter-explorer agent, and can draft a project CLAUDE.md. Use when opening a new repo, at the start of a task in an unknown project, or when asked "how does this project work".
+description: Gets productive in an unfamiliar Flutter/Dart codebase in minutes - detects the stack, checks the project can build on this machine (SDK constraints, codegen, env files, flavors), maps architecture and conventions with the flutter-explorer agent, and can draft a project CLAUDE.md. Use when opening a new repo or starting a task in an unknown project. Do not use in a project already mapped in this session.
 argument-hint: "[--write-claude-md]"
 ---
 
@@ -21,14 +21,10 @@ argument-hint: "[--write-claude-md]"
 4. Present to the user: the explorer briefing (trimmed), environment status
    (`⚠` items first), and the 3 most useful next steps.
 
-## Working in someone else's codebase
-- Their conventions over this plugin's defaults, always. If something looks
-  wrong, say so and ask; don't "fix" it as a side effect of the task.
-- Keep diffs minimal and on-task: no drive-by refactors, renames,
-  reformatting or lint cleanups outside the lines the task touches (the
-  hooks already avoid reformatting unformatted files and only block on
-  issues in changed lines).
-- State the plan before editing, and the assumptions it relies on.
+## Then
+Work by the `standards` skill, sections 1 and 2 (the project wins; diffs stay
+on-task in someone else's code). Before the first change, run the `verify`
+skill once so you know the baseline.
 
 ## `--write-claude-md`
 If the project has no `CLAUDE.md` (or `AGENTS.md`), draft one, under 80
