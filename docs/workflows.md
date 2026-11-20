@@ -40,9 +40,10 @@ checking the result.
    navigation entry point. `feature` asks if something is ambiguous.
 2. `/flutter-steering:feature payments "list of payments with 30-day total"`:
    plan first (files per layer), then bottom-up: domain → data → state → UI.
-3. Tests: `/flutter-steering:test payments`, or let `flutter-test-writer`
-   handle a large feature in parallel while you review the UI.
-4. Quality passes as needed: `l10n audit`, `a11y-audit`, `perf-audit` on the
+3. Tests: the official `flutter-add-widget-test` / `dart-add-unit-test`
+   skills for individual tests, or let `flutter-test-writer` cover a whole
+   feature in parallel while you review the UI.
+4. Quality passes as needed: `l10n-audit`, `a11y-audit`, `perf-audit` on the
    new screens.
 5. `verify` → `review` → `commit` (proposes atomic commits, waits for
    approval).
@@ -50,7 +51,8 @@ checking the result.
 ## 3. Getting a change ready for review
 
 1. `/flutter-steering:review`: findings ranked blocker → nit with fixes.
-2. Fix blockers and majors; add missing tests (`test changed`).
+2. Fix blockers and majors; add missing tests for the changed files
+   (`flutter-test-writer`).
 3. `/flutter-steering:verify` until green.
 4. `/flutter-steering:commit`, then open the PR with a description of the
    why, screenshots for UI changes, and how it was tested.
