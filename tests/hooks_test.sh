@@ -25,6 +25,9 @@ EOF
 mkdir -p "$tmp/not_dart"
 
 export TMPDIR="$tmp"
+# Hermetic: never read the real user settings.
+export CLAUDE_CONFIG_DIR="$tmp/claude-config"
+mkdir -p "$CLAUDE_CONFIG_DIR"
 passed=0
 failed=0
 
@@ -163,6 +166,16 @@ check "stop: pre-existing issues alone don't block" 0 "$code"
 # session_context
 run session_context.sh "$project" '{"session_id":"s1"}'
 check "session: stack detected" yes "$(grep -q 'state=Bloc; routing=go_router' <<<"$out" && echo yes)"
+check "session: hot reload rule" yes "$(grep -q 'hot reload through the Dart MCP server' <<<"$out" && echo yes)"
+check "session: official plugin suggested when missing" yes "$(grep -q 'dart-flutter@dart-flutter' <<<"$out" && echo yes)"
+printf '{"enabledPlugins": {"dart-flutter@dart-flutter": true}}\n' >"$CLAUDE_CONFIG_DIR/settings.json"
+run session_context.sh "$project" '{"session_id":"s1"}'
+check "session: no suggestion when official plugin enabled" no "$(grep -q 'dart-flutter@dart-flutter' <<<"$out" && echo yes || echo no)"
+rm -f "$CLAUDE_CONFIG_DIR/settings.json"
+mkdir -p "$project/.claude"
+printf '{"enabledPlugins": {"dart-flutter@dart-flutter": true}}\n' >"$project/.claude/settings.json"
+run session_context.sh "$project" '{"session_id":"s1"}'
+check "session: project-level enablement counts" no "$(grep -q 'dart-flutter@dart-flutter' <<<"$out" && echo yes || echo no)"
 run session_context.sh "$tmp/not_dart" '{"session_id":"s1"}'
 check "session: silent outside Dart projects" "" "$out"
 
