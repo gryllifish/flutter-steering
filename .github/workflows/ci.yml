@@ -46,8 +46,14 @@ jobs:
           dart format --output=none --set-exit-if-changed skills
           dart analyze --fatal-infos skills
 
-      - name: Hook tests
-        run: tests/hooks_test.sh
+      # Agent Skills spec validation, as the Flutter team does for its own
+      # skills. Claude Code-specific frontmatter (argument-hint,
+      # disable-model-invocation) is intentional, so disallowed-field is off.
+      - name: Skills lint
+        run: |
+          dart pub global activate skills_lint 0.5.3+1
+          dart pub global run skills_lint --skills-directory skills \
+            --check-relative-paths --check-trailing-whitespace --no-disallowed-field
 
-      - name: Triage tests
-        run: tests/triage_test.sh
+      - name: Script tests
+        run: for t in tests/*_test.sh; do "$t" || exit 1; done
