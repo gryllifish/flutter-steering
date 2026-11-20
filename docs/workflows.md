@@ -59,6 +59,7 @@ checking the result.
 
 | Situation | Use |
 |---|---|
+| Crash, red screen, failing build or test | `triage` with the log, the failing command, `device` or a CI run: first error, project frames only, then fix with a regression test |
 | App feels janky | `perf-audit`, then profile mode + DevTools (or the MCP server's inspector) |
 | Adding a package | `deps add <pkg>`: evaluation table, alternatives, waits for approval |
 | Flutter upgrade | `deps sdk <version>`: breaking changes that affect this code, pins, CI, native |

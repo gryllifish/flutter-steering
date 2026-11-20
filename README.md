@@ -54,6 +54,7 @@ manual-only because they have side effects.
 | `feature` | Builds a feature end to end, using the project's most complete feature as the template. |
 | `test` | Unit, widget, golden, bloc/provider and accessibility tests in the project's style. |
 | `review` | Reviews a diff, branch or PR through `flutter-reviewer`. |
+| `triage` | Root cause of an error from any log: `flutter run`/`test`, logcat, iOS simulator, Gradle, Xcode, CocoaPods, pub, analyzer, CI. A Dart extractor turns a 200-line log into the distinct errors with only the project's own frames; then the skill traces it to the code and proves the fix. |
 | `perf-audit` | Static scan for rebuild, list, image and isolate problems, plus profiling, app size and startup guidance. |
 | `a11y-audit` | Semantics, tap targets, contrast, text scaling, focus, and guideline tests (`meetsGuideline`). |
 | `l10n` | Adds strings to every locale, finds hardcoded strings, checks ARB parity and RTL. gen-l10n, slang or easy_localization. |
@@ -85,8 +86,9 @@ Rules that should hold every time are hooks, not instructions.
 
 ### MCP
 `.mcp.json` registers the official Dart & Flutter MCP server
-(`dart mcp-server`): analyzer, pub.dev search, test runner, and the running
-app's widget tree, logs and hot reload.
+(`dart mcp-server`) with app lifecycle tools enabled: analyzer, pub.dev
+search, listing devices, launching and stopping the app, its logs and
+runtime errors, widget tree and hot reload.
 
 ## Design notes
 
@@ -118,7 +120,8 @@ ready for review.
 ## Development
 
 ```sh
-tests/hooks_test.sh   # hook test suite (needs jq and dart)
+tests/hooks_test.sh    # hook test suite (needs jq and dart)
+tests/triage_test.sh   # log extractor against real and synthetic logs
 ```
 
 To try local changes, add the clone as a marketplace:
