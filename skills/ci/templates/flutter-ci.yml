@@ -1,0 +1,70 @@
+# Flutter quality gate on every push to main and every PR.
+# Template from flutter-steering: adjust the flutter version, the verify
+# command and the build job to the project. Pin actions to commit SHAs (tag
+# in a comment) and let Dependabot keep them current.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4 # pin to SHA
+        with:
+          persist-credentials: false
+
+      - uses: subosito/flutter-action@v2 # pin to SHA
+        with:
+          flutter-version-file: pubspec.yaml # or .fvmrc / flutter-version: x.y.z
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # Remove this step if the project does not use build_runner.
+      - name: Codegen
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Format
+        run: dart format --output=none --set-exit-if-changed lib test
+
+      - name: Analyze
+        run: flutter analyze --no-pub
+
+      - name: Test
+        run: flutter test --no-pub --coverage
+
+      - name: Generated files are committed
+        run: git diff --exit-code
+
+  build-android:
+    needs: verify
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4 # pin to SHA
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v4 # pin to SHA
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: subosito/flutter-action@v2 # pin to SHA
+        with:
+          flutter-version-file: pubspec.yaml
+          cache: true
+      - run: flutter build apk --debug
