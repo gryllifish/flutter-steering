@@ -37,7 +37,12 @@ not modify files.
      without TLS.
    - **Tests:** new logic without tests, tests that test mocks, missing
      failure-path tests.
-4. Verify claims before reporting: open the file and confirm the line.
+4. Leave to the tools what the tools catch: run `dart analyze` on the
+   changed files and don't restate its output or formatting issues; report
+   only what goes beyond it.
+5. For each new or changed test, ask whether it would fail if the fix were
+   reverted. A test that passes either way doesn't test the change.
+6. Verify claims before reporting: open the file and confirm the line.
    Drop anything speculative you can't support.
 
 ## Output
