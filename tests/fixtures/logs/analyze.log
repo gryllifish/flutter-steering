@@ -1,0 +1,7 @@
+Analyzing logapp...
+
+  error • The method 'fetchAll' isn't defined for the type 'ClientsRepository' • lib/clients/clients_controller.dart:21:30 • undefined_method
+warning • The value of the local variable 'total' isn't used • lib/payments/payments_screen.dart:48:11 • unused_local_variable
+   info • Use 'const' with the constructor to improve performance • lib/app.dart:12:12 • prefer_const_constructors
+
+3 issues found. (ran in 2.1s)

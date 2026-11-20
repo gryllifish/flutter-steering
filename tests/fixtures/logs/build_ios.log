@@ -1,0 +1,16 @@
+synthetic fixture: `flutter run -d iPhone` with a CocoaPods resolution failure and a Swift compiler error
+Launching lib/main.dart on iPhone 16 Pro in debug mode...
+Running pod install...                                           1,532ms
+[!] CocoaPods could not find compatible versions for pod "FirebaseCore":
+  In Podfile:
+    firebase_core (from `.symlinks/plugins/firebase_core/ios`) was resolved to 3.6.0, which depends on
+      Firebase/CoreOnly (= 11.2.0) was resolved to 11.2.0, which depends on
+
+Running Xcode build...
+Xcode build done.                                            8.1s
+Failed to build iOS app
+Swift Compiler Error (Xcode): Cannot find 'GeneratedPluginRegistrant' in scope
+__ROOT__/ios/Runner/AppDelegate.swift:10:5
+
+Could not build the application for the simulator.
+Error launching application on iPhone 16 Pro.

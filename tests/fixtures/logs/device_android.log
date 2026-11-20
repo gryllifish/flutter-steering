@@ -1,0 +1,14 @@
+--------- synthetic fixture: adb logcat output while running the app (threadtime and brief formats)
+11-20 10:15:30.101  4321  4321 I flutter : Observatory listening on http://127.0.0.1:41235/
+11-20 10:15:32.123  4321  4350 E flutter : [ERROR:flutter/runtime/dart_vm_initializer.cc(40)] Unhandled Exception: DioException [bad response]: This exception was thrown because the response has a status code of 401 and RequestOptions.validateStatus was configured to throw for this status code.
+11-20 10:15:32.123  4321  4350 E flutter : #0      DioMixin.fetch.<anonymous closure> (package:dio/src/dio_mixin.dart:509:7)
+11-20 10:15:32.123  4321  4350 E flutter : <asynchronous suspension>
+11-20 10:15:32.123  4321  4350 E flutter : #1      AuthRepository.refresh (package:logapp/data/auth_repository.dart:42:22)
+11-20 10:15:32.123  4321  4350 E flutter : <asynchronous suspension>
+11-20 10:15:32.123  4321  4350 E flutter : #2      SessionController.build (package:logapp/application/session_controller.dart:18:5)
+11-20 10:15:32.124  4321  4350 E flutter : <asynchronous suspension>
+11-20 10:15:33.010  4321  4380 D EGL_emulation: app_time_stats: avg=16.02ms min=4.11ms max=31.40ms count=60
+I/flutter ( 4321): Another exception was thrown: A RenderFlex overflowed by 12 pixels on the bottom.
+I/flutter ( 4321): Another exception was thrown: A RenderFlex overflowed by 12 pixels on the bottom.
+I/flutter ( 4321): Another exception was thrown: A RenderFlex overflowed by 12 pixels on the bottom.
+W/OpenGLRenderer( 4321): Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...

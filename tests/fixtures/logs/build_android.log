@@ -1,0 +1,22 @@
+synthetic fixture: `flutter build apk` with a Kotlin error and an AAR metadata failure
+Running Gradle task 'assembleDebug'...
+> Task :app:compileDebugKotlin FAILED
+e: file://__ROOT__/android/app/src/main/kotlin/com/example/logapp/MainActivity.kt:12:5 Unresolved reference 'FlutterFragmentActivity'.
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:checkDebugAarMetadata'.
+> A failure occurred while executing com.android.build.gradle.internal.tasks.CheckAarMetadataWorkAction
+   > The minCompileSdk (35) specified in a
+     dependency's AAR metadata (META-INF/com/android/build/gradle/aar-metadata.properties)
+     is greater than this module's compileSdkVersion (android-34).
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+
+* Get more help at https://help.gradle.org
+
+BUILD FAILED in 14s
+Error: Gradle task assembleDebug failed with exit code 1
