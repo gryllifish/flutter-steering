@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.4.0 - 2026-11-20
+
+Repositioned as a companion to the official Dart and Flutter plugin
+(`dart-flutter@dart-flutter` from flutter/agent-plugins).
+
+- MCP: the bundled server now exposes only the app lifecycle tools the
+  official configuration leaves off (`--disable all --enable
+  flutter_app_lifecycle`), so the two plugins never duplicate tools. Server
+  renamed to `dart-app`.
+- `standards`: rewritten to novel information only (project-first rules,
+  on-task diffs, deprecated APIs agents still generate). The generic
+  architecture, state-management and widget references were removed.
+- Removed the `test` skill and its testing reference; the official test
+  skills and the `flutter-test-writer` agent cover it.
+- `l10n` became `l10n-audit`: setup is left to the official
+  `flutter-setup-localization`; adds `arb_parity.sh` for key and
+  placeholder parity across locales.
+- `feature` points to the official architecture skill for new projects.
+- Every skill description is in third person and says when not to use it.
+- SessionStart adds session rules (baseline before changes, hot reload after
+  `lib/` edits, no commits without approval) and suggests the official
+  plugin when it isn't enabled.
+- `flutter-reviewer` leaves analyzer findings to the analyzer and checks
+  that new tests would fail if the fix were reverted.
+- CI validates skills with `skills_lint` and runs every test script.
+
 ## 0.3.0 - 2026-11-20
 
 - `triage` skill: root cause from any log source (flutter run/test,

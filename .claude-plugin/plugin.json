@@ -1,7 +1,7 @@
 {
   "name": "flutter-steering",
-  "version": "0.3.0",
-  "description": "Senior Flutter engineering workflow for Claude Code: stack-aware standards, review/test/onboarding agents, audits (performance, accessibility, l10n), dependency and release workflows, guardrail hooks and the Dart & Flutter MCP server.",
+  "version": "0.4.0",
+  "description": "Companion to the official Dart and Flutter plugin for working on Flutter codebases with an agent: project-first standards, guardrail hooks scoped to the agent's diff, onboarding and environment checks, log triage, review/test/explorer agents, audits, dependency, CI and release workflows.",
   "author": {
     "name": "Francisco Páez"
   },
