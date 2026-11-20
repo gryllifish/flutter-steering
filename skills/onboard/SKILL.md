@@ -6,19 +6,29 @@ argument-hint: "[--write-claude-md]"
 
 # Onboard
 
-1. Run the stack detector (this skill's directory):
-   `scripts/detect_stack.sh <project-root>`
+1. In parallel, from this skill's directory:
+   - `scripts/detect_stack.sh <project-root>`: stack inventory.
+   - `scripts/env_check.sh <project-root>`: readiness to build and run
+     (SDK vs pins and CI, pub get, codegen outputs committed or not, l10n,
+     env/define files, flavors, Firebase config). Read-only.
 2. Delegate the deep read to the `flutter-explorer` agent. Give it the
    detector output and the detector's absolute path. If the user mentioned a
    task, ask it to also map the area of the code that task touches.
-3. Sanity check the environment, quickly and in parallel:
-   - SDK: the pinned version (`.fvmrc`) vs installed (`flutter --version`).
-   - `flutter pub get` succeeds.
-   - Codegen outputs are up to date (`git status` clean after
-     `dart run build_runner build --delete-conflicting-outputs`, only if
-     build_runner is used and the user is fine with running it).
-4. Present to the user: the explorer briefing (trimmed), environment status,
-   and the 3 most useful next steps.
+3. Get the project runnable, asking before each step that changes the
+   working tree or installs something (`fvm install`, `pub get`,
+   build_runner, creating env files from templates). Missing secrets or
+   config: tell the user what to request from the team; never invent values.
+4. Present to the user: the explorer briefing (trimmed), environment status
+   (`⚠` items first), and the 3 most useful next steps.
+
+## Working in someone else's codebase
+- Their conventions over this plugin's defaults, always. If something looks
+  wrong, say so and ask; don't "fix" it as a side effect of the task.
+- Keep diffs minimal and on-task: no drive-by refactors, renames,
+  reformatting or lint cleanups outside the lines the task touches (the
+  hooks already avoid reformatting unformatted files and only block on
+  issues in changed lines).
+- State the plan before editing, and the assumptions it relies on.
 
 ## `--write-claude-md`
 If the project has no `CLAUDE.md` (or `AGENTS.md`), draft one, under 80
