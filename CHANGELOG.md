@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.0 - 2026-11-20
+
+- `triage` skill: root cause from any log source (flutter run/test,
+  logcat, iOS simulator, Gradle, Xcode, CocoaPods, pub, analyzer, CI), with
+  a dependency-free Dart extractor that keeps distinct errors in order,
+  deduplicates repeats and drops every stack frame outside the project.
+  Tested against real `flutter test` and `pub get` logs and synthetic
+  native/device logs.
+- Dart MCP server: app lifecycle tools enabled (`list_devices`,
+  `launch_app`, `get_app_logs`, `stop_app`), so Claude can run the app and
+  read its logs directly.
+- CI formats and analyzes the Dart scripts and runs the triage tests.
+
 ## 0.2.0 - 2026-11-20
 
 Safer defaults for working in someone else's codebase.
